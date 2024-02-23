@@ -113,6 +113,23 @@ app.post('/send-otp', async(req, res) => {
         res.status(500).json({ error: 'Failed to send OTP email', details: error.message });
     }
 });
+app.post('/reset-password', async(req, res) => {
+    const { email, newPassword } = req.body;
+
+    try {
+        // Hash the new password before storing it
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        // Update the user's password in the database based on the email
+        const updatePasswordQuery = 'UPDATE users SET password = ? WHERE email = ?';
+        await queryDatabase(updatePasswordQuery, [hashedPassword, email]);
+
+        res.json({ message: 'Password changed successfully' });
+    } catch (error) {
+        console.error('Password change error:', error);
+        res.status(500).json({ error: 'Failed to change password' });
+    }
+});
 
 
 const db = mysql.createConnection({

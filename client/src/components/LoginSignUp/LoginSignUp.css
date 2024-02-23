@@ -111,3 +111,41 @@ input {
     /* Replace with actual icon URL */
     background-size: cover;
 }
+
+.verify-otp-button {
+    cursor: pointer;
+    padding: 8px 12px;
+    background-color: #3498db;
+    /* Blue background color */
+    color: #fff;
+    /* White text color */
+    border: none;
+    border-radius: 5px;
+    font-size: 10px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.verify-otp-button:hover {
+    background-color: #297fb8;
+    /* Darker blue on hover */
+}
+
+.verify-email-button {
+    cursor: pointer;
+    padding: 4px 10px;
+    background-color: #3498db;
+    /* Blue background color */
+    color: #fff;
+    /* White text color */
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.verify-email-button:hover {
+    background-color: #297fb8;
+    /* Darker blue on hover */
+}

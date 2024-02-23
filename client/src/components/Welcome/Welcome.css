@@ -1,17 +1,3 @@
-/* Welcome.css */
-
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background: linear-gradient(to right, #3498db, #2ecc71);
-    /* Gradient from blue to green */
-    color: #fff;
-    /* Text color */
-}
-
 h2 {
     font-size: 24px;
     margin-bottom: 10px;
