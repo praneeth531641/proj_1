@@ -1,0 +1,46 @@
+/* Welcome.css */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(to right, #3498db, #2ecc71);
+    /* Gradient from blue to green */
+    color: #fff;
+    /* Text color */
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #e74c3c;
+    /* Red color */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #c0392b;
+    /* Darker red on hover */
+}
+
+
+/* ... (add more styles as needed) */
