@@ -50,7 +50,7 @@ const ForgotPassword = () => {
                 setResetPassword(true);
             } else {
                 console.error('Invalid response:', response);
-                alert('Failed to verify OTP');
+                alert('Enter valid otp to  reset the password');
             }
         } catch (error) {
             console.error("OTP verification error:", error.message);
@@ -71,7 +71,7 @@ const ForgotPassword = () => {
                 // You can redirect the user to the login page or perform any other necessary action
             } else {
                 console.error('Invalid response:', response);
-                alert('Failed to change password');
+                alert('password is not changed');
             }
         } catch (error) {
             console.error("Password change error:", error.message);

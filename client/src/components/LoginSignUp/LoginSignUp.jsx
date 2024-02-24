@@ -69,7 +69,7 @@ const LoginSignUp = () => {
         setIsOtpVerified(true);
       } else {
         console.error('Invalid response:', response);
-        alert('Failed to verify OTP');
+        alert('Please Enter Valid OTP');
       }
     } catch (error) {
       console.error("OTP verification error:", error.message);
@@ -142,7 +142,7 @@ const LoginSignUp = () => {
       handleVerifyEmail();
     } catch (error) {
       console.error("Signup error:", error.response.data);
-      alert('Signup Failed');
+      alert('Already Existng User try login');
     }
   };
 return(
@@ -169,7 +169,7 @@ return(
                 <div className='input'>
                   <input
                     type="email"
-                    placeholder="Email"
+                    placeholder="Please enter your Email"
                     value={email}
                     onChange={handleEmailChange}
                     onBlur={() => setIsEmailTouched(true)}
@@ -207,7 +207,7 @@ return(
 
           {action === "Login" && (
             <div className="forgot-password">
-              <span onClick={() => setAction("ForgotPassword")}>Forgot Password? Click Here</span>
+              {action === "SignUp" && (<span  onClick={() => setAction("ForgotPassword")}>Forgot Password? Click Here</span>)}
               <div>
                 <span onClick={() => setAction("SignUp")}>Don't have an account? Sign up</span>
               </div>
