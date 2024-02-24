@@ -61,7 +61,7 @@ const Welcome = ({ user }) => {
     const handleChangePassword = async () => {
         try {
             const response = await axios.post('http://localhost:5000/change-password', {
-                userId:user, // Replace with the actual email
+                email:user, // Replace with the actual email
                 newPassword,
             });
 

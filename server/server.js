@@ -113,6 +113,38 @@ app.post('/send-otp', async(req, res) => {
         res.status(500).json({ error: 'Failed to send OTP email', details: error.message });
     }
 });
+app.post('/send-otp1', async(req, res) => {
+    console.log('Received send-otp request');
+    const { email } = req.body;
+
+    if (!email) {
+        return res.status(400).json({ error: 'Email is required' });
+    }
+
+    const otp = randomstring.generate({
+        length: 6,
+        charset: 'numeric',
+    });
+
+    otpStorage[email] = otp;
+
+    const mailOptions = {
+        from: 'rpraneeth.19.cse@anits.edu.in',
+        to: email,
+        subject: 'Password Reset OTP',
+        text: `Your Otp for your login is: ${otp}`,
+    };
+
+
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log('OTP email sent successfully:', info);
+        res.json({ message: 'OTP sent successfully' });
+    } catch (error) {
+        console.error('Failed to send OTP email:', error);
+        res.status(500).json({ error: 'Failed to send OTP email', details: error.message });
+    }
+});
 app.post('/reset-password', async(req, res) => {
     const { email, newPassword } = req.body;
 
@@ -130,6 +162,7 @@ app.post('/reset-password', async(req, res) => {
         res.status(500).json({ error: 'Failed to change password' });
     }
 });
+
 
 
 const db = mysql.createConnection({
@@ -309,7 +342,7 @@ app.post('/change-password', async(req, res) => {
         // Hash the new password before storing it
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-        // Update the user's password in the database
+        // Update the user's password in the database based on the email
         const updatePasswordQuery = 'UPDATE users SET password = ? WHERE email = ?';
         await queryDatabase(updatePasswordQuery, [hashedPassword, email]);
 
@@ -319,6 +352,7 @@ app.post('/change-password', async(req, res) => {
         res.status(500).json({ error: 'Failed to change password' });
     }
 });
+
 
 app.post('/dashboard/approve', (req, res) => {
     const { userId, newApprovalStatus } = req.body;

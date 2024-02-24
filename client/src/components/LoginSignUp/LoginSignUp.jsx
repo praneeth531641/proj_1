@@ -32,7 +32,7 @@ const LoginSignUp = () => {
 
   const handleSendOtp = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/send-otp', {
+      const response = await axios.post('http://localhost:5000/send-otp1', {
         email,
       });
 
