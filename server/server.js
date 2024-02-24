@@ -190,10 +190,35 @@ wss.on('connection', function connection(ws) {
     ws.send('Hello! You are connected.');
 });
 
+// const adminCredentials = {
+//     email: 'mrunalbondade@gmail.com',
+//     password: 'Marvella@11', // Hash and salt the password in a real-world scenario
+// };
 const adminCredentials = {
-    email: 'mrunalbondade@gmail.com',
-    password: 'Marvella@11', // Hash and salt the password in a real-world scenario
+    email: 'praneethrayavarapu@gmail.com',
+    password: 'Tharun@98', // Hash and salt the password in a real-world scenario
 };
+
+app.get('/get-user-data', async(req, res) => {
+    const userEmail = req.query.email;
+
+    try {
+        // Replace this with your actual database query to get user data
+        const result = await db.query('SELECT name FROM users WHERE email = ?', [userEmail]);
+        const rows = result.rows; // Assuming rows is a property in your result
+
+        if (rows.length > 0) {
+            res.json(rows[0]);
+        } else {
+            res.status(404).json({ error: 'User not found' });
+        }
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
 app.post('/verify-otp', (req, res) => {
     const { email, otp } = req.body;
     if (!email || !otp) {
@@ -283,7 +308,7 @@ app.post('/login', async(req, res) => {
 
 // Registration route
 app.post('/register', async(req, res) => {
-    const { email, password } = req.body;
+    const { email, name, password } = req.body;
 
     // Check if the email is already registered
     const checkDuplicateQuery = 'SELECT * FROM users WHERE email = ?';
@@ -297,8 +322,8 @@ app.post('/register', async(req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Insert user into the database with 'approved' set to false by default
-    const insertUserQuery = 'INSERT INTO users (email, password, approved) VALUES (?, ?, false)';
-    await queryDatabase(insertUserQuery, [email, hashedPassword]);
+    const insertUserQuery = 'INSERT INTO users (email,name, password, approved) VALUES (?,?, ?, false)';
+    await queryDatabase(insertUserQuery, [email, name, hashedPassword]);
 
     return res.status(201).json({ message: 'Registration successful. Awaiting admin approval.' });
 });

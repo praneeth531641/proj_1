@@ -23,7 +23,7 @@
 }
 
 .text {
-    color: #333;
+    color: #1dbf4bdd;
     /* Dark gray text color */
 }
 
@@ -69,7 +69,7 @@ input {
     border-radius: 5px;
     font-size: 16px;
     font-weight: bold;
-    color: #fff;
+    color: #399b5ea6;
     /* White text color */
 }
 
@@ -79,7 +79,7 @@ input {
 }
 
 .submit-signup {
-    background-color: #27ae60;
+    background-color: #ae5b27;
     /* Green background for signup button */
 }
 
@@ -148,4 +148,8 @@ input {
 .verify-email-button:hover {
     background-color: #297fb8;
     /* Darker blue on hover */
+}
+
+.validation-message {
+    color: #c0392b;
 }

@@ -19,6 +19,7 @@ const LoginSignUp = () => {
   const [showOtpInput, setShowOtpInput] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const [isEmailTouched, setIsEmailTouched] = useState(false);
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -124,11 +125,15 @@ const LoginSignUp = () => {
       alert('Please verify OTP before signing up.');
       return;
     }
+    const handleEmailChange = (event) => {
+      setEmail(event.target.value);
+      setIsEmailTouched(true);
+      setIsEmailValid(event.target.checkValidity());
+    };
 
     try {
-      const response = await axios.post('http://localhost:5000/register', {
+      const response = await axios.post('http://localhost:5000/register', { email,
         name,
-        email,
         password,
       });
       console.log(response.data);
@@ -140,9 +145,8 @@ const LoginSignUp = () => {
       alert('Signup Failed');
     }
   };
-
-  return (
-    <div className='container'>
+return(
+  <div className='container'>
       {!loggedIn ? (
         <div>
           <Welcome user={email} />
@@ -163,48 +167,50 @@ const LoginSignUp = () => {
             {action !== "ForgotPassword" && (
               <>
                 <div className='input'>
-                  <input type="email" placeholder="Email" value={email} onChange={handleEmailChange} />
-                  {isEmailValid && (
-                    
-                    <button  class="verify-otp-button"onClick={handleSendOtp}>Verify Email</button>
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={handleEmailChange}
+                    onBlur={() => setIsEmailTouched(true)}
+                  />
+                  {isEmailValid || !isEmailTouched ? null : (
+                    <div className="validation-message">Enter Valid  Email format</div>
+                  )}
+                  {isEmailValid && !showOtpInput && (
+                    <button className="verify-otp-button" onClick={handleSendOtp}>Verify Email</button>
                   )}
                 </div>
-                {isEmailValid && (
+                {showOtpInput && (
                   <>
-                   
-                    {showOtpInput && (
-                      <>
-                        <div className='input'>
-                          <input type="text" placeholder="Enter OTP" value={otp} onChange={handleOtpChange} />
-                        
-                            <button  class="verify-otp-button"onClick={handleVerifyOtp}>Verify OTP</button>
-                          
-                        </div>
-                        {isOtpVerified && (
-                          <>
-                           <div className='input'>
-                      <input type="password" placeholder="Password" value={password} onChange={handlePasswordChange} />
+                    <div className='input'>
+                      <input type="text" placeholder="Enter OTP" value={otp} onChange={handleOtpChange} />
+                      <button className="verify-otp-button" onClick={handleVerifyOtp}>Verify OTP</button>
                     </div>
-                            <div className="submit-container">
-                              <div className={`submit ${action === "Login" ? "gray" : "submit-signup"}`} onClick={action === "Login" ? handleLogin : handleSignUp}>
-                                {action}
-                              </div>
-                              <div className="submit" onClick={() => setAction(action === "Login" ? "SignUp" : "Login")}>
-                                {action === "Login" ? "SignUp" : "Login"}
-                              </div>
-                            </div>
-                          </>
-                        )}
-                      </>
+                    {isOtpVerified && (
+                      <div className='input'>
+                        <input type="password" placeholder="Password" value={password} onChange={handlePasswordChange} />
+                      </div>
                     )}
                   </>
                 )}
               </>
             )}
           </div>
+          {isOtpVerified && (
+            <div className="submit-container">
+              <div className={`submit ${action === "SignUp" ? "submit-signup" : "gray"}`} onClick={action === "SignUp" ? handleSignUp : handleLogin}>
+                {action === "SignUp" ? "SignUp" : "Login"}
+              </div>
+            </div>
+          )}
+
           {action === "Login" && (
             <div className="forgot-password">
-              <span onClick={() => setAction("ForgotPassword")}>Lost Password? Click Here</span>
+              <span onClick={() => setAction("ForgotPassword")}>Forgot Password? Click Here</span>
+              <div>
+                <span onClick={() => setAction("SignUp")}>Don't have an account? Sign up</span>
+              </div>
             </div>
           )}
           {action === "ForgotPassword" ? (

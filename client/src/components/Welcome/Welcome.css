@@ -1,32 +1,53 @@
-h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
+/* Welcome.css */
+
+
+/* Import common styles */
+
+@import url('../commom.css');
+
+/* Add specific styles for Welcome component here */
+
+.container {
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    height: 50vh;
 }
 
-p {
-    font-size: 16px;
-    margin-bottom: 20px;
+.welcome-container {
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
 }
 
-input {
+.welcome-container h2 {
+    color: #333;
+}
+
+.welcome-container label {
+    display: block;
+    margin-top: 5px;
+}
+
+.welcome-container input {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
 }
 
-button {
-    padding: 10px 20px;
-    background-color: #e74c3c;
-    /* Red color */
-    color: #fff;
+.welcome-container button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
     border: none;
+    border-radius: 4px;
     cursor: pointer;
 }
 
-button:hover {
-    background-color: #c0392b;
-    /* Darker red on hover */
+.welcome-container button:hover {
+    background-color: #45a049;
 }
-
-
-/* ... (add more styles as needed) */
