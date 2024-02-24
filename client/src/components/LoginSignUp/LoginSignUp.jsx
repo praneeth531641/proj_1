@@ -142,7 +142,7 @@ const LoginSignUp = () => {
       handleVerifyEmail();
     } catch (error) {
       console.error("Signup error:", error.response.data);
-      alert('Already Existng User try login');
+      alert('Already Existing User');
     }
   };
 return(
@@ -187,7 +187,7 @@ return(
                       <input type="text" placeholder="Enter OTP" value={otp} onChange={handleOtpChange} />
                       <button className="verify-otp-button" onClick={handleVerifyOtp}>Verify OTP</button>
                     </div>
-                    {isOtpVerified && (
+                    { (
                       <div className='input'>
                         <input type="password" placeholder="Password" value={password} onChange={handlePasswordChange} />
                       </div>
@@ -207,7 +207,7 @@ return(
 
           {action === "Login" && (
             <div className="forgot-password">
-              {action === "SignUp" && (<span  onClick={() => setAction("ForgotPassword")}>Forgot Password? Click Here</span>)}
+                <span  onClick={() => setAction("ForgotPassword")}>Forgot Password? Click Here</span>
               <div>
                 <span onClick={() => setAction("SignUp")}>Don't have an account? Sign up</span>
               </div>

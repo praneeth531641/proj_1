@@ -7,18 +7,18 @@
 
 /* Add specific styles for Welcome component here */
 
-.container {
+
+/* .container {
     display: flex;
     justify-content: left;
     align-items: left;
-    height: 50vh;
-}
+    height: 50vh; */
 
 .welcome-container {
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 50px;
     text-align: center;
 }
 
