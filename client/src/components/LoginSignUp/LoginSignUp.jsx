@@ -73,7 +73,7 @@ const LoginSignUp = () => {
       }
     } catch (error) {
       console.error("OTP verification error:", error.message);
-      alert('Failed to verify OTP');
+      // alert('Failed to verify OTP');
     }
   };
 

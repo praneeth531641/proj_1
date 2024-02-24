@@ -86,11 +86,17 @@ input {
 
 /* Additional styling for admin-approve and forgot-password */
 
-.admin-approve,
-.forgot-password {
+.admin-approve {
     margin-top: 10px;
     cursor: pointer;
     color: #3498db;
+    /* Blue text color */
+}
+
+.forgot-password {
+    margin-top: 10px;
+    cursor: pointer;
+    color: #fff;
     /* Blue text color */
 }
 
@@ -151,5 +157,5 @@ input {
 }
 
 .validation-message {
-    color: #c0392b;
+    color: #fff;
 }
