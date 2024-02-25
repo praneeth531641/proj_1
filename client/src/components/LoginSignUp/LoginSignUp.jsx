@@ -177,7 +177,7 @@ const LoginSignUp = () => {
     {passwordError && <p className="error-message">{passwordError}</p>}
 </div>
             <div className='submit-container'>
-              {isEmailValid && !showOtpInput && (
+              {!showOtpInput && (
                 <button className='submit green' onClick={handleSendOtp}>
                   Login
                 </button>

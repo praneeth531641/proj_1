@@ -33,10 +33,12 @@ const handlePasswordChange = (event) => {
     try {
       const response = await axios.get(`http://localhost:5000/get-user-data?email=${user}`);
       setUserData(response.data);
+      console.log('User Data:', response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
   };
+  
 
   const navigate = useNavigate();
 

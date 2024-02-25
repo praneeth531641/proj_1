@@ -45,15 +45,10 @@ const handlePasswordChange = async () => {
             alert('Failed to change password');
         }
     } else {
-        setNewPasswordError('Enter a new password');
+        setNewPasswordError('Enter a valid password');
     }
 };
 
-// ...
-
-
-
-// ...
 
    
     
