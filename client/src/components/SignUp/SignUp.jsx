@@ -11,10 +11,50 @@ const SignUp = ({ handleVerifyEmail, setAction }) => {
   const [otp, setOtp] = useState('');
   const [showOtpInput, setShowOtpInput] = useState(false);
   const navigate = useNavigate();
+  const [nameError, setNameError] = useState('');
+const [emailError, setEmailError] = useState('');
+const [passwordError, setPasswordError] = useState('');
 
-  const handleNameChange = (event) => setName(event.target.value);
-  const handleEmailChange = (event) => setEmail(event.target.value);
-  const handlePasswordChange = (event) => setPassword(event.target.value);
+const handleNameChange = (event) => {
+  const newName = event.target.value;
+  setName(newName);
+
+  // Validate name
+  if (!newName.trim()) {
+    setNameError('Name cannot be empty');
+  } else {
+    setNameError('');
+  }
+};
+
+const handleEmailChange = (event) => {
+  const newEmail = event.target.value;
+  setEmail(newEmail);
+
+  // Validate email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(newEmail)) {
+    setEmailError('Enter a valid email address');
+  } else {
+    setEmailError('');
+  }
+};
+
+const handlePasswordChange = (event) => {
+  const newPassword = event.target.value;
+  setPassword(newPassword);
+
+  // Validate password
+  if (!newPassword.trim()) {
+    setPasswordError('Password cannot be empty');
+  } else {
+    setPasswordError('');
+  }
+};
+
+  // const handleNameChange = (event) => setName(event.target.value);
+  // const handleEmailChange = (event) => setEmail(event.target.value);
+  // const handlePasswordChange = (event) => setPassword(event.target.value);
   const handleOtpChange = (event) => setOtp(event.target.value);
 
   const handleSendOtp = async () => {
@@ -76,17 +116,25 @@ const SignUp = ({ handleVerifyEmail, setAction }) => {
   };
 
   return (
+   
     <div className="container3">
+       <h1>SignUp</h1>
       <>
-        <div className='input'>
-          <input type="text" placeholder="Name" value={name} onChange={handleNameChange} />
-        </div>
-        <div className='input'>
-          <input type="email" placeholder="Please enter your Email" value={email} onChange={handleEmailChange} />
-        </div>
-        <div className='input'>
-          <input type="password" placeholder="Password" value={password} onChange={handlePasswordChange} />
-        </div>
+      <div className='input'>
+  <input type="text" placeholder="Name" value={name} onChange={handleNameChange} />
+  {nameError && <p className="error-message">{nameError}</p>}
+</div>
+
+<div className='input'>
+  <input type="email" placeholder="Please enter your Email" value={email} onChange={handleEmailChange} />
+  {emailError && <p className="error-message">{emailError}</p>}
+</div>
+
+<div className='input'>
+  <input type="password" placeholder="Password" value={password} onChange={handlePasswordChange} />
+  {passwordError && <p className="error-message">{passwordError}</p>}
+</div>
+
         {!showOtpInput && (
           <div className="submit-container">
             <button className="submit signup" onClick={handleSendOtp}>

@@ -9,9 +9,54 @@ const ForgotPassword = () => {
     const [showOtpInput, setShowOtpInput] = useState(false);
     const [resetPassword, setResetPassword] = useState(false);
     const [newPassword, setNewPassword] = useState('');
-    const navigate = useNavigate(); 
-    const handleEmailChange = (event) => setEmail(event.target.value);
+    const [emailError, setEmailError] = useState('');
+    const [otpError, setOtpError] = useState('');
+    const [newPasswordError, setNewPasswordError] = useState('');
 
+
+    const navigate = useNavigate(); 
+    const handleEmailChange = (event) => {const emailValue = event.target.value;
+        setEmail(emailValue);
+
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        setEmailError(emailRegex.test(emailValue) ? '' : 'Enter a valid email address');
+    };
+    // ...
+
+const handlePasswordChange = async () => {
+    if (newPassword) {
+        try {
+            // Reset any previous error messages
+            setNewPasswordError('');
+
+            const response = await axios.post('http://localhost:5000/reset-password', {
+                email,
+                newPassword,
+            });
+
+            if (response && response.data && response.data.message === 'Password changed successfully') {
+                alert('Password changed successfully');
+                // You can redirect the user to the login page or perform any other necessary action
+            } else {
+                alert('Failed to change password');
+            }
+        } catch (error) {
+            alert('Failed to change password');
+        }
+    } else {
+        setNewPasswordError('Enter a new password');
+    }
+};
+
+// ...
+
+
+
+// ...
+
+   
+    
     const handleSendOtp = async () => {
         try {
             const response = await axios.post('http://localhost:5000/send-otp', {
@@ -58,29 +103,30 @@ const ForgotPassword = () => {
         }
     };
 
-    const handlePasswordChange = async () => {
-        try {
-            const response = await axios.post('http://localhost:5000/reset-password', {
-                email: email,
-                newPassword,
-            });
+    // const handlePasswordChange = async () => {
+    //     try {
+    //         const response = await axios.post('http://localhost:5000/reset-password', {
+    //             email: email,
+    //             newPassword,
+    //         });
 
-            if (response && response.data && response.data.message === 'Password changed successfully') {
-                console.log(response.data.message);
-                alert('Password changed successfully');
-                // You can redirect the user to the login page or perform any other necessary action
-            } else {
-                console.error('Invalid response:', response);
-                alert('password is not changed');
-            }
-        } catch (error) {
-            console.error("Password change error:", error.message);
-            alert('Failed to change password');
-        }
-    };
+    //         if (response && response.data && response.data.message === 'Password changed successfully') {
+    //             console.log(response.data.message);
+    //             alert('Password changed successfully');
+    //             // You can redirect the user to the login page or perform any other necessary action
+    //         } else {
+    //             console.error('Invalid response:', response);
+    //             alert('password is not changed');
+    //         }
+    //     } catch (error) {
+    //         console.error("Password change error:", error.message);
+    //         alert('Failed to change password');
+    //     }
+    // };
 
     return (
         <div class= "cantainer2">
+            <h1>Forgot Password</h1>
             <p>Please enter your email to receive an OTP.</p>
             <div>
                 <input type="email" placeholder="Email" value={email} onChange={handleEmailChange} />
@@ -100,14 +146,23 @@ const ForgotPassword = () => {
                 {resetPassword && (
                     <div>
                         <p>Enter your new password:</p>
-                        <div>
+                        {/* <div>
                             <input
                                 type="password"
                                 placeholder="New Password"
                                 value={newPassword}
                                 onChange={(e) => setNewPassword(e.target.value)}
                             />
-                        </div>
+                        </div> */}
+                        <div>
+    <input
+        type="password"
+        placeholder="New Password"
+        value={newPassword}
+        onChange={(e) => setNewPassword(e.target.value)}
+    />
+    {newPasswordError && <p className="error-message">{newPasswordError}</p>}
+</div>
                         <div>
                             <button onClick={handlePasswordChange}>Change Password</button>
                         </div>

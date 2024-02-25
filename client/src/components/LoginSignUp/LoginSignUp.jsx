@@ -7,6 +7,10 @@ import { useNavigate } from 'react-router-dom';
 import './LoginSignUp.css';
 
 const LoginSignUp = () => {
+  const handleLogout = () => {
+    setLoggedIn(false);
+  };
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [otp, setOtp] = useState('');
@@ -17,6 +21,8 @@ const LoginSignUp = () => {
   const [showOtpInput, setShowOtpInput] = useState(false);
   const [isEmailVerified, setEmailVerified] = useState(false);
   const [isEmailTouched, setIsEmailTouched] = useState(false);
+  const [passwordError, setPasswordError] = useState('');
+
 
   const navigate = useNavigate();
 
@@ -33,7 +39,16 @@ const LoginSignUp = () => {
     setIsEmailValid(event.target.checkValidity());
   };
 
-  const handlePasswordChange = (event) => setPassword(event.target.value);
+  const handlePasswordChange = (event) =>{const newPassword = event.target.value;
+  setPassword(newPassword);
+
+  // Validate password
+  if (!newPassword.trim()) {
+      setPasswordError('Password cannot be empty');
+  } else {
+      setPasswordError('');
+  }
+};
   const handleOtpChange = (event) => setOtp(event.target.value);
 
   const handleSendOtp = async () => {
@@ -120,7 +135,7 @@ const LoginSignUp = () => {
     <div className='container'>
       {!isLoggedIn ? (
         <div>
-          <Welcome user={email} />
+          <Welcome user={email} onLogout={handleLogout} />
           {isAdmin && <DashBoard />}
         </div>
       ) : (
@@ -139,17 +154,28 @@ const LoginSignUp = () => {
                 onBlur={() => setIsEmailTouched(true)}
               />
               {isEmailValid || !isEmailTouched ? null : (
-                <div className="validation-message">Enter Valid Email format</div>
+                <div className="validation-message">Enter Valid Email Id</div>
               )}
             </div>
-            <div className='input'>
+            {/* <div className='input'>
               <input
                 type="password"
                 placeholder="Password"
                 value={password}
                 onChange={handlePasswordChange}
               />
-            </div>
+            </div> */}
+            
+
+<div className='input'>
+    <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={handlePasswordChange}
+    />
+    {passwordError && <p className="error-message">{passwordError}</p>}
+</div>
             <div className='submit-container'>
               {isEmailValid && !showOtpInput && (
                 <button className='submit green' onClick={handleSendOtp}>
