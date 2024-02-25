@@ -111,12 +111,12 @@ const LoginSignUp = () => {
 
   const handleLogin = async () => {
     try {
-      const loginResponse = await axios.post('http://localhost:5000/login', {
+      const response = await axios.post('http://localhost:5000/login', {
         email,
         password,
       });
-
-      const userData = loginResponse.data;
+  
+      const userData = response.data;
       setEmail(userData.email);
 
       if (userData.isAdmin) {
@@ -126,10 +126,14 @@ const LoginSignUp = () => {
       alert('Login Successful');
       setLoggedIn(false);
     } catch (error) {
-      console.error("Login error:", error.message);
-      alert('Login Failed');
+      console.error("Login error:", error.response?.data || error.message);
+      if(error.response?.data.error !== undefined){alert(error.response?.data.error);}
     }
   };
+  
+     
+      
+   
 
   return (
     <div className='container'>

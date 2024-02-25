@@ -94,7 +94,7 @@ const handlePasswordChange = (event) => {
       }
     } catch (error) {
       console.error("OTP verification error:", error.message);
-      alert('Failed to verify OTP');
+      alert('Please Enter Valid OTP');
     }
   };
 
@@ -110,9 +110,9 @@ const handlePasswordChange = (event) => {
       alert('Signup Successful');
       handleVerifyEmail();
     } catch (error) {
-      console.error("Signup error:", error.response.data);
-      alert('Already Existing User');
+      if(error.response?.data.error !== undefined){alert(error.response.data.error);
     }
+  }
   };
 
   return (
