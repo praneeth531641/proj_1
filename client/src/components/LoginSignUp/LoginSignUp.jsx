@@ -1,39 +1,44 @@
-import React, { useState } from 'react';
-import './LoginSignUp.css';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
-import ForgotPassword from '../ForgotPassword/ForgotPassword';
-import DashBoard from '../DashBoard/DashBoard';
 import Welcome from '../Welcome/Welcome';
+import DashBoard from '../DashBoard/DashBoard';
+import { useNavigate } from 'react-router-dom';
+
+import './LoginSignUp.css';
 
 const LoginSignUp = () => {
-  const [action, setAction] = useState("Login");
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [loggedIn, setLoggedIn] = useState(true);
-  const [name, setName] = useState("");
-  const [isAdmin, setAdmin] = useState(false);
-  const [usermail, setMail] = useState('');
   const [otp, setOtp] = useState('');
-  const [showOtpInput, setShowOtpInput] = useState(false);
+  const [isLoggedIn, setLoggedIn] = useState(true);
+  const [isAdmin, setAdmin] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const [showOtpInput, setShowOtpInput] = useState(false);
+  const [isEmailVerified, setEmailVerified] = useState(false);
   const [isEmailTouched, setIsEmailTouched] = useState(false);
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // This effect will run when isOtpVerified changes
+    if (isOtpVerified) {
+      handleLogin();
+    }
+  }, [isOtpVerified]);
+
   const handleEmailChange = (event) => {
+    setIsEmailTouched(true);
     setEmail(event.target.value);
     setIsEmailValid(event.target.checkValidity());
   };
 
   const handlePasswordChange = (event) => setPassword(event.target.value);
-  const handleNameChange = (event) => setName(event.target.value);
-  const handleNewPasswordChange = (event) => setNewPassword(event.target.value);
   const handleOtpChange = (event) => setOtp(event.target.value);
 
   const handleSendOtp = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/send-otp1', {
+      const response = await axios.post('http://localhost:5000/send-otp', {
         email,
       });
 
@@ -47,11 +52,6 @@ const LoginSignUp = () => {
       }
     } catch (error) {
       console.error("Send OTP error:", error.message);
-
-      if (error.response) {
-        console.error("Server response data:", error.response.data);
-      }
-
       alert('Failed to send OTP');
     }
   };
@@ -66,6 +66,7 @@ const LoginSignUp = () => {
       if (response && response.data && response.data.message === 'OTP verified successfully') {
         console.log(response.data.message);
         alert('OTP verified successfully');
+        setEmailVerified(true);
         setIsOtpVerified(true);
       } else {
         console.error('Invalid response:', response);
@@ -73,7 +74,7 @@ const LoginSignUp = () => {
       }
     } catch (error) {
       console.error("OTP verification error:", error.message);
-      // alert('Failed to verify OTP');
+      alert('Failed to verify OTP');
     }
   };
 
@@ -94,19 +95,14 @@ const LoginSignUp = () => {
   };
 
   const handleLogin = async () => {
-    if (!isOtpVerified) {
-      alert('Please verify OTP before logging in.');
-      return;
-    }
-
     try {
-      const response = await axios.post('http://localhost:5000/login', {
+      const loginResponse = await axios.post('http://localhost:5000/login', {
         email,
         password,
       });
 
-      const userData = response.data;
-      setMail(userData.email);
+      const userData = loginResponse.data;
+      setEmail(userData.email);
 
       if (userData.isAdmin) {
         setAdmin(true);
@@ -115,39 +111,14 @@ const LoginSignUp = () => {
       alert('Login Successful');
       setLoggedIn(false);
     } catch (error) {
-      console.error("Login error:", error.response.data);
+      console.error("Login error:", error.message);
       alert('Login Failed');
     }
   };
 
-  const handleSignUp = async () => {
-    if (!isOtpVerified) {
-      alert('Please verify OTP before signing up.');
-      return;
-    }
-    const handleEmailChange = (event) => {
-      setEmail(event.target.value);
-      setIsEmailTouched(true);
-      setIsEmailValid(event.target.checkValidity());
-    };
-
-    try {
-      const response = await axios.post('http://localhost:5000/register', { email,
-        name,
-        password,
-      });
-      console.log(response.data);
-      alert('Signup Successful');
-      // Trigger email verification after signup
-      handleVerifyEmail();
-    } catch (error) {
-      console.error("Signup error:", error.response.data);
-      alert('Already Existing User');
-    }
-  };
-return(
-  <div className='container'>
-      {!loggedIn ? (
+  return (
+    <div className='container'>
+      {!isLoggedIn ? (
         <div>
           <Welcome user={email} />
           {isAdmin && <DashBoard />}
@@ -155,67 +126,70 @@ return(
       ) : (
         <>
           <div className='header'>
-            <div className='text'>{action}</div>
+            <div className='text'>Login</div>
             <div className='underLine'></div>
           </div>
           <div className='inputs'>
-            {action === "SignUp" && (
-              <div className='input'>
-                <input type="text" placeholder="Name" value={name} onChange={handleNameChange} />
-              </div>
-            )}
-            {action !== "ForgotPassword" && (
-              <>
-                <div className='input'>
+            <div className='input'>
+              <input
+                type="email"
+                placeholder="Please enter your Email"
+                value={email}
+                onChange={handleEmailChange}
+                onBlur={() => setIsEmailTouched(true)}
+              />
+              {isEmailValid || !isEmailTouched ? null : (
+                <div className="validation-message">Enter Valid Email format</div>
+              )}
+            </div>
+            <div className='input'>
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={handlePasswordChange}
+              />
+            </div>
+            <div className='submit-container'>
+              {isEmailValid && !showOtpInput && (
+                <button className='submit green' onClick={handleSendOtp}>
+                  Login
+                </button>
+              )}
+            </div>
+            <div className='input'>
+              {showOtpInput && !isEmailVerified && (
+                <>
                   <input
-                    type="email"
-                    placeholder="Please enter your Email"
-                    value={email}
-                    onChange={handleEmailChange}
-                    onBlur={() => setIsEmailTouched(true)}
+                    type="text"
+                    placeholder="Enter OTP"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
                   />
-                  {isEmailValid || !isEmailTouched ? null : (
-                    <div className="validation-message">Enter Valid  Email format</div>
-                  )}
-                  {isEmailValid && !showOtpInput && (
-                    <button className="verify-otp-button" onClick={handleSendOtp}>Verify Email</button>
-                  )}
-                </div>
-                {showOtpInput && (
-                  <>
-                    <div className='input'>
-                      <input type="text" placeholder="Enter OTP" value={otp} onChange={handleOtpChange} />
-                      <button className="verify-otp-button" onClick={handleVerifyOtp}>Verify OTP</button>
-                    </div>
-                    { (
-                      <div className='input'>
-                        <input type="password" placeholder="Password" value={password} onChange={handlePasswordChange} />
-                      </div>
-                    )}
-                  </>
-                )}
-              </>
-            )}
+                  <div className='submit-container'>
+                    <button className='submit blue' onClick={handleVerifyOtp}>
+                      Verify Otp
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+            {/* {isOtpVerified && (
+              <div className='submit-container'>
+                <button className='submit green' onClick={handleLogin}>
+                  Login
+                </button>
+              </div> */}
+            {/* )} */}
           </div>
-          {isOtpVerified && (
-            <div className="submit-container">
-              <div className={`submit ${action === "SignUp" ? "submit-signup" : "gray"}`} onClick={action === "SignUp" ? handleSignUp : handleLogin}>
-                {action === "SignUp" ? "SignUp" : "Login"}
-              </div>
-            </div>
-          )}
-
-          {action === "Login" && (
-            <div className="forgot-password">
-                <span  onClick={() => setAction("ForgotPassword")}>Forgot Password? Click Here</span>
-              <div>
-                <span onClick={() => setAction("SignUp")}>Don't have an account? Sign up</span>
-              </div>
-            </div>
-          )}
-          {action === "ForgotPassword" ? (
-            <ForgotPassword />
-          ) : null}
+          <div className='footer'>
+            <button className='footer-button' onClick={() => navigate('/signup')}>
+              Sign Up
+            </button>
+            <button className='footer-button' onClick={() => navigate('/forgot-password')}>
+              Forgot Password
+            </button>
+          </div>
         </>
       )}
     </div>

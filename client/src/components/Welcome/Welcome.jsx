@@ -1,141 +1,204 @@
-
-// // import React, { useState } from 'react';
-// // import axios from 'axios';
-// // import './Welcome.css';
-
-// // const Welcome = ({ user }) => {
-// //     const [newPassword, setNewPassword] = useState('');
-
-// //     const handlePasswordChange = (event) => setNewPassword(event.target.value);
-
-// //     const handleChangePassword = async () => {
-// //         try {
-// //             const response = await axios.post('http://localhost:5000/change-password', {
-// //                 email:user, // Replace with the actual email
-// //                 newPassword,
-// //             });
-
-// //             console.log(response.data);
-// //             alert('Password changed successfully');
-// //         } catch (error) {
-// //             console.error("Password change error:", error.response.data);
-// //             alert('Failed to change password');
-// //         }
-// //     };
-
-// //     return (
-// //         <div>
-// //             <h2>Welcome, {user.name}!</h2>
-// //             <p>Email: {user}</p>
-// //             <div>
-// //                 <label>New Password:</label>
-// //                 <input type="password" value={newPassword} onChange={handlePasswordChange} />
-// //             </div>
-// //             <button onClick={handleChangePassword}>Change Password</button>
-// //         </div>
-// //     );
-// // };
-
-// // export default Welcome;
-
-// // Welcome.js
-
-// import React, { useState } from 'react';
+// import React, { useState, useEffect } from 'react';
 // import axios from 'axios';
 // import './Welcome.css';
-// import '../commom.css';
+// import { useNavigate } from 'react-router-dom';
 
 // const Welcome = ({ user }) => {
-//     const [newPassword, setNewPassword] = useState('');
+//   const [userData, setUserData] = useState({});
+//   const [newPassword, setNewPassword] = useState('');
+//   const [isChangingPassword, setIsChangingPassword] = useState(false);
+//   const [isClicked, setisClicked] = useState(false);
+//   const [isnotClicked, setisnotClicked] = useState(true);
 
-//     const handlePasswordChange = (event) => setNewPassword(event.target.value);
+//   useEffect(() => {
+//     // Fetch additional user data when the component mounts
+//     fetchUserData();
+//   }, [user]);
 
-//     const handleChangePassword = async () => {
-//         try {
-//             const response = await axios.post('http://localhost:5000/change-password', {
-//                 email:user, // Replace with the actual email
-//                 newPassword,
-//             });
+//   const fetchUserData = async () => {
+//     try {
+//       const response = await axios.get(`http://localhost:5000/get-user-data?email=${user}`);
+//       setUserData(response.data);
+//     } catch (error) {
+//       console.error('Error fetching user data:', error);
+//     }
+//   };
 
-//             console.log(response.data);
-//             alert('Password changed successfully');
-//         } catch (error) {
-//             console.error("Password change error:", error.response.data);
-//             alert('Failed to change password');
-//         }
-//     };
+//   const navigate = useNavigate();
 
-//     return (
-//         <div className="container">
-//             <div className="welcome-container">
-//                 <h2>Welcome, {user.name}!</h2>
-//                 <p>Email: {user}</p>
-//                 <div>
-//                     <label>New Password:</label>
-//                     <input type="password" value={newPassword} onChange={handlePasswordChange} />
-//                 </div>
-//                 <button onClick={handleChangePassword}>Change Password</button>
-//             </div>
+//   const handlePasswordChange = (event) => {
+//     setisnotClicked(true);
+//     setNewPassword(event.target.value)};
+//   const handleDisplay = () => {
+//     setisClicked(!isClicked)}
+//     ;
+
+//   const handleChangePassword = async () => {
+//     try {
+//       setisnotClicked(false);
+
+//       setIsChangingPassword(true);
+//       const response = await axios.post('http://localhost:5000/change-password', {
+//         email: user,
+//         newPassword,
+//       });
+
+//       console.log(response.data);
+//       alert('Password changed successfully');
+//     } catch (error) {
+//       console.error('Password change error:', error.response.data);
+//       alert('Failed to change password');
+//     } finally {
+//       setIsChangingPassword(false);
+//     }
+//   };
+
+//   return (
+//     <div className="container1">
+//       <div className="welcome-container">
+//         <h2>Welcome!</h2>
+//         <p>Email: {user}</p>
+//         <div className="mb-3">
+//           {isClicked && (
+//             <>
+//               <label className="form-label">New Password:</label>
+//               <input
+//                 type="password"
+//                 className="form-control"
+//                 value={newPassword}
+//                 placeholder="Enter new password here"
+//                 onChange={handlePasswordChange}
+//               />
+
+//               <button
+//                 className="btn btn-primary"
+//                 onClick={handleChangePassword}
+//                 disabled={isChangingPassword}
+//               >
+//                 {isChangingPassword ? 'Changing Password...' : 'Change Password'}
+//               </button>
+//             </>
+//           )}
 //         </div>
-//     );
+//         {isnotClicked && (
+//             <> <button onClick={handleDisplay}>
+//            Wanna Change the  Password
+//         </button>
+//         </>
+//         )}
+//       </div>
+
+//       <div className="footer mt-3">
+//         <button className="btn btn-secondary" onClick={() => navigate('/')}>
+//           LogOut
+//         </button>
+//       </div>
+//     </div>
+//   );
 // };
 
 // export default Welcome;
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Welcome.css';
-import '../commom.css';
+import { useNavigate } from 'react-router-dom';
 
 const Welcome = ({ user }) => {
-    const [userData, setUserData] = useState({});
-    const [newPassword, setNewPassword] = useState('');
+  const [userData, setUserData] = useState({});
+  const [newPassword, setNewPassword] = useState('');
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [isClicked, setisClicked] = useState(false);
+  const [isnotClicked, setisnotClicked] = useState(true);
 
-    useEffect(() => {
-        // Fetch additional user data when the component mounts
-        fetchUserData();
-    }, [user]);
+  useEffect(() => {
+    // Fetch additional user data when the component mounts
+    fetchUserData();
+  }, [user]);
 
-    const fetchUserData = async () => {
-        try {
-            const response = await axios.get(`http://localhost:5000/get-user-data?email=${user}`);
-            setUserData(response.data);
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-        }
-    };
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/get-user-data?email=${user}`);
+      setUserData(response.data);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
 
-    const handlePasswordChange = (event) => setNewPassword(event.target.value);
+  const navigate = useNavigate();
 
-    const handleChangePassword = async () => {
-        try {
-            const response = await axios.post('http://localhost:5000/change-password', {
-                email: user,
-                newPassword,
-            });
+  const handlePasswordChange = (event) => {
+    setisnotClicked(true);
+    setNewPassword(event.target.value);
+  };
 
-            console.log(response.data);
-            alert('Password changed successfully');
-        } catch (error) {
-            console.error("Password change error:", error.response.data);
-            alert('Failed to change password');
-        }
-    };
+  const handleDisplay = () => {
+    setisClicked(!isClicked);
+  };
 
-    return (
-        <div className="container">
-            <div className="welcome-container">
-                <h2>Welcome!</h2>
-                <p>Email: {user}</p>
-                {/* <p>Name: {userData.name}</p> */}
-                {/* <p>Additional Data: {userData.additionalData}</p> */}
-                <div>
-                    <label>New Password:</label>
-                    <input type="password" value={newPassword} placeholder="enter new password here"onChange={handlePasswordChange} />
-                </div>
-                <button onClick={handleChangePassword}>Change Password</button>
-            </div>
+  const handleChangePassword = async () => {
+    try {
+      setisnotClicked(false);
+      setIsChangingPassword(true);
+
+      const response = await axios.post('http://localhost:5000/change-password', {
+        email: user,
+        newPassword,
+      });
+
+      console.log(response.data);
+      alert('Password changed successfully');
+    } catch (error) {
+      console.error('Password change error:', error.response.data);
+      alert('Failed to change password');
+    } finally {
+      setIsChangingPassword(false);
+    }
+  };
+
+  return (
+    <div className="container1">
+      <div className="welcome-container">
+        <h2>Welcome!</h2>
+        <p>Email: {user}</p>
+        <div className="mb-3">
+          {isClicked && (
+            <>
+              <label className="form-label">New Password:</label>
+              <input
+                type="password"
+                className="form-control"
+                value={newPassword}
+                placeholder="Enter new password here"
+                onChange={handlePasswordChange}
+              />
+
+              <button
+                className="btn btn-primary"
+                onClick={handleChangePassword}
+                disabled={isChangingPassword}
+              >
+                {isChangingPassword ? 'Changing Password...' : 'Change Password'}
+              </button>
+            </>
+          )}
         </div>
-    );
+        {isnotClicked && (
+          <>
+            <button onClick={handleDisplay}>
+              {isClicked ? 'Hide Profile' : 'Wanna Change Password'}
+            </button>
+          </>
+        )}
+      </div>
+
+      <div className="footer mt-3">
+        <button className="btn btn-secondary" onClick={() => navigate('/')}>
+          LogOut
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default Welcome;

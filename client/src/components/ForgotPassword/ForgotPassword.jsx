@@ -2,14 +2,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './ForgotPassword.css';
-
+import { useNavigate } from 'react-router-dom';
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
     const [otp, setOtp] = useState('');
     const [showOtpInput, setShowOtpInput] = useState(false);
     const [resetPassword, setResetPassword] = useState(false);
     const [newPassword, setNewPassword] = useState('');
-
+    const navigate = useNavigate(); 
     const handleEmailChange = (event) => setEmail(event.target.value);
 
     const handleSendOtp = async () => {
@@ -80,7 +80,7 @@ const ForgotPassword = () => {
     };
 
     return (
-        <div>
+        <div class= "cantainer2">
             <p>Please enter your email to receive an OTP.</p>
             <div>
                 <input type="email" placeholder="Email" value={email} onChange={handleEmailChange} />
@@ -117,6 +117,12 @@ const ForgotPassword = () => {
                     <button onClick={handleSendOtp}>Send OTP</button>
                 )}
             </div>
+            <div className="footer">
+        <button className="footer-button" onClick={() => navigate('/')}>
+          Go Back
+        </button>
+      </div>
+            
         </div>
     );
 };

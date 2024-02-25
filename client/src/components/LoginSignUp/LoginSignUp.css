@@ -1,161 +1,90 @@
 /* LoginSignUp.css */
 
-
-/* LoginSignUp.css */
-
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background: linear-gradient(to right, #3498db, #c0392b);
-    /* Gradient from blue to red */
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-
-/* ... (rest of your existing styles) */
+.theme-background {
+    background: linear-gradient(to right, #ff8a65, #ff4e00);
+    /* Example gradient theme */
+}
 
 .header {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
+    background-color: #007bff;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px 8px 0 0;
 }
 
 .text {
-    color: #1dbf4bdd;
-    /* Dark gray text color */
+    font-size: 24px;
+    font-weight: bold;
 }
 
 .underLine {
     height: 2px;
-    width: 100%;
-    background-color: #3498db;
-    /* Blue underline color */
-    margin-top: 5px;
+    background-color: #fff;
+    margin-top: 10px;
 }
 
 .inputs {
-    display: flex;
-    flex-direction: column;
-    width: 300px;
-    margin-top: 20px;
+    padding: 20px;
 }
 
 .input {
     margin-bottom: 15px;
 }
 
-input {
+.input input {
     width: 100%;
     padding: 10px;
+    box-sizing: border-box;
     border: 1px solid #ccc;
-    /* Light gray border */
-    border-radius: 5px;
-    outline: none;
+    border-radius: 4px;
 }
 
 .submit-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
+    text-align: center;
 }
 
 .submit {
-    cursor: pointer;
-    padding: 10px 20px;
+    padding: 10px 15px;
     border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #399b5ea6;
-    /* White text color */
-}
-
-.gray {
-    background-color: #ccc;
-    /* Light gray background for inactive button */
-}
-
-.submit-signup {
-    background-color: #ae5b27;
-    /* Green background for signup button */
-}
-
-
-/* Additional styling for admin-approve and forgot-password */
-
-.admin-approve {
-    margin-top: 10px;
+    border-radius: 4px;
     cursor: pointer;
-    color: #3498db;
-    /* Blue text color */
 }
 
-.forgot-password {
-    margin-top: 10px;
-    cursor: pointer;
+.submit.green {
+    background-color: #28a745;
     color: #fff;
-    /* Blue text color */
 }
 
-
-/* Icon styling */
-
-.icon {
-    margin-right: 10px;
-}
-
-
-/* Example of using a placeholder icon from FontAwesome */
-
-.icon-placeholder {
-    width: 20px;
-    height: 20px;
-    background-image: url('https://via.placeholder.com/20');
-    /* Replace with actual icon URL */
-    background-size: cover;
-}
-
-.verify-otp-button {
-    cursor: pointer;
-    padding: 8px 12px;
-    background-color: #3498db;
-    /* Blue background color */
+.submit.blue {
+    background-color: #007bff;
     color: #fff;
-    /* White text color */
+}
+
+.footer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.footer-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 15px;
     border: none;
-    border-radius: 5px;
-    font-size: 10px;
-    font-weight: bold;
-    transition: background-color 0.3s;
-}
-
-.verify-otp-button:hover {
-    background-color: #297fb8;
-    /* Darker blue on hover */
-}
-
-.verify-email-button {
+    border-radius: 4px;
+    margin: 0 10px;
     cursor: pointer;
-    padding: 4px 10px;
-    background-color: #3498db;
-    /* Blue background color */
-    color: #fff;
-    /* White text color */
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-    transition: background-color 0.3s;
 }
 
-.verify-email-button:hover {
-    background-color: #297fb8;
-    /* Darker blue on hover */
-}
-
-.validation-message {
-    color: #fff;
+.footer-button:hover {
+    background-color: #0056b3;
 }
