@@ -8,12 +8,16 @@ const SignUp = ({ handleVerifyEmail, setAction }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [address, setAddress] = useState('');
+  const [dob, setDob] = useState('');
   const [otp, setOtp] = useState('');
   const [showOtpInput, setShowOtpInput] = useState(false);
   const navigate = useNavigate();
   const [nameError, setNameError] = useState('');
 const [emailError, setEmailError] = useState('');
 const [passwordError, setPasswordError] = useState('');
+const [AddressError, setAddressError] = useState('');
+const [DobError, setDobError] = useState('');
 
 const handleNameChange = (event) => {
   const newName = event.target.value;
@@ -49,6 +53,28 @@ const handlePasswordChange = (event) => {
     setPasswordError('Password cannot be empty');
   } else {
     setPasswordError('');
+  }
+};
+const handleAddressChange = (event) => {
+  const newPassword = event.target.value;
+  setAddress(newPassword);
+
+  // Validate password
+  if (!newPassword.trim()) {
+    setAddressError('Password cannot be empty');
+  } else {
+    setAddressError('');
+  }
+};
+const handleDobChange = (event) => {
+  const newPassword = event.target.value;
+  setDob(newPassword);
+
+  // Validate password
+  if (!newPassword.trim()) {
+    setDobError('Password cannot be empty');
+  } else {
+    setDobError('');
   }
 };
 
@@ -104,6 +130,8 @@ const handlePasswordChange = (event) => {
         email,
         name,
         password,
+        dob,
+        address
       });
 
       console.log(response.data);
@@ -123,6 +151,15 @@ const handlePasswordChange = (event) => {
       <div className='input'>
   <input type="text" placeholder="Name" value={name} onChange={handleNameChange} />
   {nameError && <p className="error-message">{nameError}</p>}
+</div>
+<div className='input'>
+  <input type="date" placeholder="Date Of Birth" value={dob} onChange={handleDobChange} />
+  {DobError && <p className="error-message">{DobError}</p>}
+  
+</div>
+      <div className='input'>
+  <input type="text" placeholder=" Enter Address" value={address} onChange={handleAddressChange} />
+  {AddressError && <p className="error-message">{AddressError}</p>}
 </div>
 
 <div className='input'>

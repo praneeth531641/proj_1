@@ -199,23 +199,30 @@ const adminCredentials = {
     password: 'Tharun@98', // Hash and salt the password in a real-world scenario
 };
 
-app.get('/get-user-data', async(req, res) => {
-    const userEmail = req.query.email;
+app.post('/get-user-data', (req, res) => {
+    const { email } = req.body;
+    const query = 'SELECT * FROM users WHERE useremail = ?';
 
-    try {
-        // Replace this with your actual database query to get user data
-        const result = await db.query('SELECT name FROM users WHERE email = ?', [userEmail]);
-        const rows = result.rows; // Assuming rows is a property in your result
-
-        if (rows.length > 0) {
-            res.json(rows[0]);
-        } else {
-            res.status(404).json({ error: 'User not found' });
+    connection.query(query, [email], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Internal Server Error');
         }
-    } catch (error) {
-        console.error('Error fetching user data:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
+
+        if (results.length === 0) {
+            return res.status(404).send('User not found');
+        }
+
+        // Assuming results[0] contains the user data
+        const userData = {
+            username: results[0].username,
+            dateOfBirth: results[0].dob,
+            address: results[0].address,
+            // Add any other fields you want to include
+        };
+
+        res.json(userData);
+    });
 });
 
 
@@ -246,7 +253,9 @@ const createUsersTableQuery = `
         name   VARCHAR(255) NOT NULL,
         email VARCHAR(255) NOT NULL,
         password VARCHAR(255) NOT NULL,
-        approved BOOLEAN DEFAULT false
+        approved BOOLEAN DEFAULT false,
+        dob  Date ,
+        address VARCHAR(255) NOT NULL
     )
 `;
 
@@ -281,7 +290,7 @@ app.post('/login', async(req, res) => {
         }
 
         // Check if the user is an admin
-        if (email === adminCredentials.email && password === adminCredentials.password) {
+        if (email === adminCredentials.email) {
             isAdmin = true;
 
             // Redirect or respond with a token indicating admin status
@@ -309,7 +318,7 @@ app.post('/login', async(req, res) => {
 
 // Registration route
 app.post('/register', async(req, res) => {
-    const { email, name, password } = req.body;
+    const { email, name, password, dob, address } = req.body;
 
     // Check if the email is already registered
     const checkDuplicateQuery = 'SELECT * FROM users WHERE email = ?';
@@ -323,8 +332,8 @@ app.post('/register', async(req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Insert user into the database with 'approved' set to false by default
-    const insertUserQuery = 'INSERT INTO users (email,name, password, approved) VALUES (?,?, ?, false)';
-    await queryDatabase(insertUserQuery, [email, name, hashedPassword]);
+    const insertUserQuery = 'INSERT INTO users (email,name, password, approved,dob,address) VALUES (?,?, ?, false,?,?)';
+    await queryDatabase(insertUserQuery, [email, name, hashedPassword, dob, address]);
 
     return res.status(201).json({ message: 'Registration successful. Awaiting admin approval.' });
 });
